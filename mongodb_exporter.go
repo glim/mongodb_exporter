@@ -40,6 +40,11 @@ const (
 func mongodbDefaultURI() string {
 	if u := os.Getenv("MONGODB_URL"); u != "" {
 		return u
+	} else if filePath := os.Getenv("MONGODB_URL_FILE"); filePath != "" {
+		fileContents, err := ioutil.ReadFile(filePath)
+		if err == nil {
+			return strings.TrimSpace(string(fileContents))
+		}
 	}
 	return "mongodb://localhost:27017"
 }
